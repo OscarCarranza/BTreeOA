@@ -6,181 +6,158 @@
 package btree;
 
 public class Tree {
-    Page root; 
-
-    public Tree(){
-        root = new Page(null);
-    }
-
-    public Page findPos(Page root, int key){
-        int i = 0;
-        while(i < root.key_count && key > root.keys[i]){
-            i++;
-        }
-        
-        if(i <= root.key_count && key == root.keys[i]){
-            return root;
-        }
-
-        if(root.leaf){
-            return null;
-        }
-
-        else{
-            return findPos(root.getChild(i),key);
-        }
-    }
     
-    public void split(Page leftChild, int newPos, Page rightChild){
-            Page parent = new Page(null);
-            parent.leaf = rightChild.leaf;
+	static int order = 3; 
+	Page root; 
 
-            parent.key_count = 2;
-            for(int i = 0; i < 2; i++){
-                    parent.keys[i] = rightChild.keys[i+3];
+
+	public Tree(int order){
+            root = new Page(order, null);
+	}
+
+	public Page findPos(Page currentPage, int newKey){
+
+            int pos = 0;
+
+            while(pos < currentPage.keycount && newKey > currentPage.keys[pos]){
+                pos++;
             }
-            if(!rightChild.leaf){
-                for(int i = 0; i < 3; i++){
-                    parent.children[i] = rightChild.children[i+3]; 
+
+            if(pos <= currentPage.keycount && newKey == currentPage.keys[pos]){
+                return currentPage;
+            }
+
+            if(currentPage.isLeaf){
+                return null ;
+            }
+            else{
+                return findPos(currentPage.getChildAt(pos),newKey);
+            }
+	}
+
+	public void split(Page leftChild, int new_key, Page rightChild){
+            
+            Page parent = new Page(order,null);
+            parent.isLeaf = rightChild.isLeaf;
+            parent.keycount = order - 1;
+
+            for(int i = 0; i < order - 1; i++){
+                parent.keys[i] = rightChild.keys[i+order]; 
+            }
+
+            if(!rightChild.isLeaf){
+                for(int i = 0; i < order; i++){
+                    parent.children[i] = rightChild.children[i+order]; 
                 }
             }
 
-            rightChild.key_count = 2;
-            for(int i = leftChild.key_count ; i> i ; i--){
-                leftChild.children[i+1] = leftChild.children[i]; //cambio los hijos
+            rightChild.keycount = order - 1;
+            for(int i = leftChild.keycount ; i> new_key ; i--){
+                leftChild.children[i+1] = leftChild.children[i]; 
             }
-            leftChild.children[newPos+1] = parent; 
+            leftChild.children[new_key+1] = parent; 
 
-            for(int i = leftChild.key_count; i > newPos; i--){
+            for(int i = leftChild.keycount; i> new_key; i--){
                 leftChild.keys[i+1] = leftChild.keys[i]; 
             }
-            
-            leftChild.keys[newPos] = rightChild.keys[2];
-            rightChild.keys[2] = 0; 
+            leftChild.keys[new_key] = rightChild.keys[order-1];
+            rightChild.keys[order-1 ] = 0; 
 
-            for(int j = 0; j < 2; j++){
-                rightChild.keys[j+3] = 0; 
+            for(int j = 0; j < order - 1; j++){
+                rightChild.keys[j + order] = 0; //borrar valores de ambas pgs
             }
 
-            leftChild.key_count ++; 
-    }
+            leftChild.keycount ++;  //increase count of keys in x
+	}
 
-    public void directInsertion(Page page, int key){
-            int num_keys = page.key_count; //i is number of keys in node x
+	public void directInsertion(Page page, int newKey){
+            int pos = page.keycount;
 
-            if(page.leaf){
-                while(num_keys >= 1 && key < page.keys[num_keys-1]){
-                    page.keys[num_keys] = page.keys[num_keys-1];
-                    num_keys--;
+            if(page.isLeaf){
+                while(pos >= 1 && newKey < page.keys[pos-1]){
+                    page.keys[pos] = page.keys[pos-1];
+                    pos--;
                 }
 
-                page.keys[num_keys] = key;
-                page.key_count ++; 
+                page.keys[pos] = newKey;
+                page.keycount++;      
             }
-
 
             else{
-                    int pos = 0;
-                    while(pos < page.key_count  && key > page.keys[pos]){	
-                            pos++;
+		
+                pos = 0;
+                while(pos < page.keycount  && newKey > page.keys[pos]){			             		
+                        pos++;
+                }
+
+                if(page.children[pos].keycount == order*2 - 1){
+                    split(page,pos,page.children[pos]);
+                    if(newKey > page.keys[pos]){
+                        pos++;
                     }
+                }
 
-                    if(page.children[pos].key_count == 5){
-                        split(page,pos,page.children[pos]);
-
-                        if(key > page.keys[pos]){
-                                pos++;
-                        }
-                    }
-                    directInsertion(page.children[pos],key);//recurse
+                directInsertion(page.children[pos],newKey);
             }
-    }
+	}
 
-    public void insert(int key){
-
-        if(this.root.key_count == 5) {
-            Page newPage = new Page(null);
-            this.root = newPage;  
-            newPage.leaf = false;
-            newPage.key_count = 0; 
-            newPage.children[0] = this.root;
-            split(newPage,0,this.root);
-            directInsertion(newPage, key); 
-        }
-        
-        else{
-           directInsertion(this.root,key);
-        }
-    }
-
-    public void print(Page n)
-    {
-            for(int i = 0; i < n.key_count; i++)
-            {
-                    System.out.print(n.getValue(i)+" " );//this part prints root node
+	public void insert(int key){
+            Page currentPage = this.root;
+            if(currentPage.keycount == 2*order - 1){
+                Page temp = new Page(order,null);
+                this.root = temp;
+                temp.isLeaf = false;
+                temp.keycount = 0;  
+                temp.children[0] = currentPage;
+                split(temp,0,currentPage);
+                directInsertion(temp, key);
             }
-
-            if(!n.leaf)//this is called when root is not leaf;
-            {
-
-                    for(int j = 0; j <= n.key_count  ; j++)//in this loop we recurse
-                    {				  //to print out tree in
-                            if(n.getChild(j) != null) //preorder fashion.
-                            {			  //going from left most
-                            System.out.println();	  //child to right most
-                            print(n.getChild(j));     //child.
-                            }
-                    }
-            }
-    }
-
-// ------------------------------------------------------------
-// this will be method to print out a node                    |
-// ------------------------------------------------------------
-
-    public void SearchPrintNode(Tree T,int x)
-    {
-            Page temp= new Page();
-
-            temp= findPos(T.root,x);
-
-            if (temp==null)
-            {
-
-            System.out.println("The Key does not exist in this tree");
-            }
-
             else
-            {
+                directInsertion(currentPage,key);
+	}
 
-            print(temp);
+	public void print(Page currentPage){
+            for(int i = 0; i < currentPage.keycount; i++){
+                System.out.print(currentPage.getValue(i) + " ");
             }
 
-
-    }
-
-   public void deleteKey(Tree t, int key){
-
-        Page temp = new Page();
-        temp = findPos(t.root,key);
-        if(temp.leaf && temp.key_count > 2)
-        {
-                int i = 0;
-
-                while( key > temp.getValue(i))
-                {
-                        i++;
+            if(!currentPage.isLeaf){
+                for(int i = 0; i <= currentPage.keycount; i++){				  
+                    if(currentPage.getChildAt(i) != null){			 
+                    System.out.println();	
+                    print(currentPage.getChildAt(i));    
+                    }
                 }
-                for(int j = i; j < 4; j++)
-                {
-                        temp.keys[j] = temp.getValue(j+1);
-                }
-                temp.key_count --;
+            }
+	}
+//--------------------------------------------------------------
+//this method will delete a key value from the leaf node it is |
+//in.  We will use the search method to traverse through the   |
+//tree to find the node where the key is in.  We will then     |
+//iterated through key[] array until we get to node and will   |
+//assign k[i] = k[i+1] overwriting key we want to delete and   |
+//keeping blank spots out as well.  Note that this is the most |
+//simple case of delete that there is and we will not have time|
+//to implement all cases properly.                             |
+//--------------------------------------------------------------
 
-        }
-        else
-        {
-                System.out.println("This node is either not a leaf or has less than order - 1 keys.");
-        }
-   }
+       public void deleteKey(int key){
+			       
+            Page temp = new Page(order,null);
+            temp = findPos(this.root,key);
+
+            if(temp.isLeaf && temp.keycount > order - 1){
+                int cont = 0;
+                while( key > temp.getValue(cont)){
+                    cont++;
+                }
+                for(int i = cont; i < 2*order - 2; i++){
+                        temp.keys[i] = temp.getValue(i+1);
+                }
+                temp.keycount--;
+            }
+            else{
+                    System.out.println("This node is either not a leaf or has less than order - 1 keys.");
+            }
+       }
 }

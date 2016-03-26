@@ -231,6 +231,7 @@ public class Frame extends javax.swing.JFrame {
             Random r = new Random();
             for(int i = 0; i < (Integer)sp_nums.getValue(); i++){
                 int random_value = r.nextInt(100) + 1;
+                System.out.println(random_value);
                 bTree.insert(random_value);
             }
            JOptionPane.showMessageDialog(this, "Keys added succesfully :D");
@@ -329,5 +330,5 @@ public class Frame extends javax.swing.JFrame {
     private javax.swing.JSpinner sp_nums;
     private javax.swing.JTextField tf_newKey;
     // End of variables declaration//GEN-END:variables
-    Tree bTree = new Tree();
+    Tree bTree = new Tree(3);
 }
