@@ -6,6 +6,8 @@
 package btree;
 
 import java.awt.event.KeyEvent;
+import java.util.Random;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -37,8 +39,9 @@ public class Frame extends javax.swing.JFrame {
         ok_insert = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
-        randomInsertion = new javax.swing.JCheckBox();
         sp_nums = new javax.swing.JSpinner();
+        randomInsertion = new javax.swing.JToggleButton();
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         b_add = new javax.swing.JButton();
@@ -79,6 +82,11 @@ public class Frame extends javax.swing.JFrame {
         jLabel5.setText("OR");
 
         randomInsertion.setText("Random Insertion");
+        randomInsertion.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                randomInsertionMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout Dialog_insertLayout = new javax.swing.GroupLayout(Dialog_insert.getContentPane());
         Dialog_insert.getContentPane().setLayout(Dialog_insertLayout);
@@ -94,10 +102,10 @@ public class Frame extends javax.swing.JFrame {
                             .addGroup(Dialog_insertLayout.createSequentialGroup()
                                 .addGap(83, 83, 83)
                                 .addComponent(jLabel3))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Dialog_insertLayout.createSequentialGroup()
-                                .addGap(37, 37, 37)
-                                .addGroup(Dialog_insertLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Dialog_insertLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(Dialog_insertLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(Dialog_insertLayout.createSequentialGroup()
+                                    .addGap(46, 46, 46)
+                                    .addGroup(Dialog_insertLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, Dialog_insertLayout.createSequentialGroup()
                                             .addComponent(ok_insert)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -105,17 +113,18 @@ public class Frame extends javax.swing.JFrame {
                                         .addGroup(Dialog_insertLayout.createSequentialGroup()
                                             .addComponent(jLabel4)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                            .addComponent(tf_newKey, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Dialog_insertLayout.createSequentialGroup()
-                                        .addComponent(randomInsertion)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(sp_nums, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addGap(0, 39, Short.MAX_VALUE)))
+                                            .addComponent(tf_newKey, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGroup(Dialog_insertLayout.createSequentialGroup()
+                                    .addGap(109, 109, 109)
+                                    .addComponent(jLabel5))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Dialog_insertLayout.createSequentialGroup()
+                                    .addGap(38, 38, 38)
+                                    .addComponent(randomInsertion, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(sp_nums, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(6, 6, 6))))
+                        .addGap(0, 25, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(Dialog_insertLayout.createSequentialGroup()
-                .addGap(120, 120, 120)
-                .addComponent(jLabel5)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         Dialog_insertLayout.setVerticalGroup(
             Dialog_insertLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -132,9 +141,9 @@ public class Frame extends javax.swing.JFrame {
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(Dialog_insertLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(randomInsertion)
-                    .addComponent(sp_nums, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                    .addComponent(sp_nums, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(randomInsertion))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
                 .addGroup(Dialog_insertLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ok_insert)
                     .addComponent(jButton1))
@@ -217,15 +226,25 @@ public class Frame extends javax.swing.JFrame {
     }//GEN-LAST:event_tf_newKeyKeyTyped
 
     private void ok_insertMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ok_insertMouseClicked
+        
         if(randomInsertion.isSelected()){
-            sp_nums.setEnabled(true);
+            Random r = new Random();
+            for(int i = 0; i < (Integer)sp_nums.getValue(); i++){
+                int random_value = r.nextInt(100) + 1;
+                bTree.insert(random_value);
+            }
+           JOptionPane.showMessageDialog(this, "Keys added succesfully :D");
         }
         
         else{
             int value = Integer.parseInt(tf_newKey.getText());
-            bTree.add(new Key(value));
+            bTree.insert(value);
+            JOptionPane.showMessageDialog(this, "Key added succesfully :D");
         }
         
+        tf_newKey.setText("");
+        randomInsertion.setSelected(false);
+        sp_nums.setEnabled(false);
     }//GEN-LAST:event_ok_insertMouseClicked
 
     private void d_importActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_d_importActionPerformed
@@ -246,6 +265,14 @@ public class Frame extends javax.swing.JFrame {
         Dialog_insert.setVisible(true);
         
     }//GEN-LAST:event_b_addMouseClicked
+
+    private void randomInsertionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_randomInsertionMouseClicked
+       if(randomInsertion.isSelected()){
+           sp_nums.setEnabled(true);
+       }
+       else
+           sp_nums.setEnabled(false);
+    }//GEN-LAST:event_randomInsertionMouseClicked
 
     /**
      * @param args the command line arguments
@@ -286,6 +313,7 @@ public class Frame extends javax.swing.JFrame {
     private javax.swing.JDialog Dialog_insert;
     private javax.swing.JButton b_add;
     private javax.swing.JButton b_del;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton d_draw;
     private javax.swing.JButton d_import;
     private javax.swing.JButton jButton1;
@@ -297,7 +325,7 @@ public class Frame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JButton ok_insert;
-    private javax.swing.JCheckBox randomInsertion;
+    private javax.swing.JToggleButton randomInsertion;
     private javax.swing.JSpinner sp_nums;
     private javax.swing.JTextField tf_newKey;
     // End of variables declaration//GEN-END:variables
