@@ -6,7 +6,17 @@
 package btree;
 
 import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 /**
@@ -16,10 +26,11 @@ import javax.swing.JOptionPane;
 public class Frame extends javax.swing.JFrame {
 
     public Frame() {
-        this.setLocationRelativeTo(null);
-        this.setTitle("Organización de Archivos");
-        this.setVisible(true);
+        
         initComponents();
+        this.setTitle("Organización de Archivos");
+        this.setLocationRelativeTo(null);
+        
     }
 
     /**
@@ -38,16 +49,27 @@ public class Frame extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         ok_insert = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
-        jLabel5 = new javax.swing.JLabel();
-        sp_nums = new javax.swing.JSpinner();
-        randomInsertion = new javax.swing.JToggleButton();
         buttonGroup1 = new javax.swing.ButtonGroup();
+        Dialog_draw = new javax.swing.JDialog();
+        jLabel7 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        notepad = new javax.swing.JTextArea();
+        success = new javax.swing.JDialog();
+        jLabel5 = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
+        jLabel8 = new javax.swing.JLabel();
+        success1 = new javax.swing.JDialog();
+        jLabel9 = new javax.swing.JLabel();
+        jButton4 = new javax.swing.JButton();
+        jLabel10 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         b_add = new javax.swing.JButton();
         b_del = new javax.swing.JButton();
-        d_draw = new javax.swing.JButton();
-        d_import = new javax.swing.JButton();
+        b_draw = new javax.swing.JButton();
+        b_imp = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        b_exp = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         jLabel3.setText("Insert new key");
@@ -79,15 +101,6 @@ public class Frame extends javax.swing.JFrame {
             }
         });
 
-        jLabel5.setText("OR");
-
-        randomInsertion.setText("Random Insertion");
-        randomInsertion.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                randomInsertionMouseClicked(evt);
-            }
-        });
-
         javax.swing.GroupLayout Dialog_insertLayout = new javax.swing.GroupLayout(Dialog_insert.getContentPane());
         Dialog_insert.getContentPane().setLayout(Dialog_insertLayout);
         Dialog_insertLayout.setHorizontalGroup(
@@ -102,28 +115,18 @@ public class Frame extends javax.swing.JFrame {
                             .addGroup(Dialog_insertLayout.createSequentialGroup()
                                 .addGap(83, 83, 83)
                                 .addComponent(jLabel3))
-                            .addGroup(Dialog_insertLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(Dialog_insertLayout.createSequentialGroup()
-                                    .addGap(46, 46, 46)
-                                    .addGroup(Dialog_insertLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, Dialog_insertLayout.createSequentialGroup()
-                                            .addComponent(ok_insert)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(Dialog_insertLayout.createSequentialGroup()
-                                            .addComponent(jLabel4)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                            .addComponent(tf_newKey, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addGroup(Dialog_insertLayout.createSequentialGroup()
-                                    .addGap(109, 109, 109)
-                                    .addComponent(jLabel5))
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Dialog_insertLayout.createSequentialGroup()
-                                    .addGap(38, 38, 38)
-                                    .addComponent(randomInsertion, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(sp_nums, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(6, 6, 6))))
-                        .addGap(0, 25, Short.MAX_VALUE)))
+                            .addGroup(Dialog_insertLayout.createSequentialGroup()
+                                .addGap(46, 46, 46)
+                                .addGroup(Dialog_insertLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, Dialog_insertLayout.createSequentialGroup()
+                                        .addComponent(ok_insert)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(Dialog_insertLayout.createSequentialGroup()
+                                        .addComponent(jLabel4)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(tf_newKey, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGap(0, 40, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         Dialog_insertLayout.setVerticalGroup(
@@ -137,63 +140,206 @@ public class Frame extends javax.swing.JFrame {
                 .addGroup(Dialog_insertLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
                     .addComponent(tf_newKey, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(Dialog_insertLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(sp_nums, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(randomInsertion))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
                 .addGroup(Dialog_insertLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ok_insert)
                     .addComponent(jButton1))
                 .addGap(21, 21, 21))
         );
 
+        jLabel7.setText("Current Tree");
+
+        notepad.setColumns(20);
+        notepad.setRows(5);
+        jScrollPane1.setViewportView(notepad);
+
+        javax.swing.GroupLayout Dialog_drawLayout = new javax.swing.GroupLayout(Dialog_draw.getContentPane());
+        Dialog_draw.getContentPane().setLayout(Dialog_drawLayout);
+        Dialog_drawLayout.setHorizontalGroup(
+            Dialog_drawLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(Dialog_drawLayout.createSequentialGroup()
+                .addGroup(Dialog_drawLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(Dialog_drawLayout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 358, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(Dialog_drawLayout.createSequentialGroup()
+                        .addGap(151, 151, 151)
+                        .addComponent(jLabel7)))
+                .addContainerGap(21, Short.MAX_VALUE))
+        );
+        Dialog_drawLayout.setVerticalGroup(
+            Dialog_drawLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(Dialog_drawLayout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(162, Short.MAX_VALUE))
+        );
+
+        jLabel5.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel5.setText("FILE SUCCESSFULLY OPENED");
+
+        jButton3.setText("OK");
+        jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton3MouseClicked(evt);
+            }
+        });
+
+        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imgs/thumbs.png"))); // NOI18N
+
+        javax.swing.GroupLayout successLayout = new javax.swing.GroupLayout(success.getContentPane());
+        success.getContentPane().setLayout(successLayout);
+        successLayout.setHorizontalGroup(
+            successLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(successLayout.createSequentialGroup()
+                .addContainerGap(22, Short.MAX_VALUE)
+                .addComponent(jLabel8)
+                .addGap(18, 18, 18)
+                .addGroup(successLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(successLayout.createSequentialGroup()
+                        .addGap(51, 51, 51)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))))
+        );
+        successLayout.setVerticalGroup(
+            successLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(successLayout.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addGroup(successLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(successLayout.createSequentialGroup()
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(21, Short.MAX_VALUE))
+                    .addGroup(successLayout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+        );
+
+        jLabel9.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel9.setText("FILE SUCCESSFULLY CREATED");
+
+        jButton4.setText("OK");
+        jButton4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton4MouseClicked(evt);
+            }
+        });
+
+        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imgs/thumbs.png"))); // NOI18N
+
+        javax.swing.GroupLayout success1Layout = new javax.swing.GroupLayout(success1.getContentPane());
+        success1.getContentPane().setLayout(success1Layout);
+        success1Layout.setHorizontalGroup(
+            success1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(success1Layout.createSequentialGroup()
+                .addContainerGap(22, Short.MAX_VALUE)
+                .addComponent(jLabel10)
+                .addGroup(success1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(success1Layout.createSequentialGroup()
+                        .addGap(69, 69, 69)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(success1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        success1Layout.setVerticalGroup(
+            success1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(success1Layout.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addGroup(success1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(success1Layout.createSequentialGroup()
+                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(24, Short.MAX_VALUE))
+                    .addGroup(success1Layout.createSequentialGroup()
+                        .addComponent(jLabel10)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBackground(new java.awt.Color(204, 204, 204));
         jPanel1.setLayout(null);
 
-        jLabel2.setFont(new java.awt.Font("Microsoft YaHei", 1, 36)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Microsoft YaHei", 1, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("B - TREE");
         jPanel1.add(jLabel2);
-        jLabel2.setBounds(90, 20, 180, 70);
+        jLabel2.setBounds(30, 30, 110, 40);
 
         b_add.setText("Insert");
+        b_add.setEnabled(false);
         b_add.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 b_addMouseClicked(evt);
             }
         });
+        b_add.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_addActionPerformed(evt);
+            }
+        });
         jPanel1.add(b_add);
-        b_add.setBounds(50, 110, 80, 26);
+        b_add.setBounds(20, 100, 110, 26);
 
         b_del.setText("Remove");
+        b_del.setEnabled(false);
         b_del.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 b_delActionPerformed(evt);
             }
         });
         jPanel1.add(b_del);
-        b_del.setBounds(50, 190, 80, 26);
+        b_del.setBounds(20, 180, 110, 26);
 
-        d_draw.setText("Draw");
-        jPanel1.add(d_draw);
-        d_draw.setBounds(50, 150, 81, 26);
-
-        d_import.setText("Import from File");
-        d_import.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                d_importActionPerformed(evt);
+        b_draw.setText("Draw");
+        b_draw.setEnabled(false);
+        b_draw.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                b_drawMouseClicked(evt);
             }
         });
-        jPanel1.add(d_import);
-        d_import.setBounds(50, 230, 130, 26);
+        jPanel1.add(b_draw);
+        b_draw.setBounds(20, 140, 110, 26);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/btree/bare-tree-clipart1.jpg"))); // NOI18N
+        b_imp.setText("Import from File");
+        b_imp.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                b_impMouseClicked(evt);
+            }
+        });
+        b_imp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_impActionPerformed(evt);
+            }
+        });
+        jPanel1.add(b_imp);
+        b_imp.setBounds(170, 220, 130, 26);
+
+        jLabel6.setBackground(new java.awt.Color(204, 204, 204));
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/btree/bare-tree-clipart1.jpg"))); // NOI18N
+        jLabel6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 153, 51), 6));
+        jPanel1.add(jLabel6);
+        jLabel6.setBounds(150, -10, 200, 320);
+
+        b_exp.setText("Export to File");
+        b_exp.setEnabled(false);
+        b_exp.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                b_expMouseClicked(evt);
+            }
+        });
+        jPanel1.add(b_exp);
+        b_exp.setBounds(20, 220, 110, 26);
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/btree/bin.jpg"))); // NOI18N
         jPanel1.add(jLabel1);
-        jLabel1.setBounds(130, 60, 210, 243);
+        jLabel1.setBounds(0, 0, 150, 300);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -227,30 +373,17 @@ public class Frame extends javax.swing.JFrame {
 
     private void ok_insertMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ok_insertMouseClicked
         
-        if(randomInsertion.isSelected()){
-            Random r = new Random();
-            for(int i = 0; i < (Integer)sp_nums.getValue(); i++){
-                int random_value = r.nextInt(100) + 1;
-                System.out.println(random_value);
-                bTree.insert(random_value);
-            }
-           JOptionPane.showMessageDialog(this, "Keys added succesfully :D");
-        }
-        
-        else{
-            int value = Integer.parseInt(tf_newKey.getText());
-            bTree.insert(value);
-            JOptionPane.showMessageDialog(this, "Key added succesfully :D");
-        }
-        
+        int value = Integer.parseInt(tf_newKey.getText());
+        bTree.insert(value);
+        valuesFromFile.add(value);
+        JOptionPane.showMessageDialog(this, "Key added succesfully :D");
+   
         tf_newKey.setText("");
-        randomInsertion.setSelected(false);
-        sp_nums.setEnabled(false);
     }//GEN-LAST:event_ok_insertMouseClicked
 
-    private void d_importActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_d_importActionPerformed
+    private void b_impActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_impActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_d_importActionPerformed
+    }//GEN-LAST:event_b_impActionPerformed
 
     private void b_delActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_delActionPerformed
         // TODO add your handling code here:
@@ -258,7 +391,6 @@ public class Frame extends javax.swing.JFrame {
 
     private void b_addMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_b_addMouseClicked
         
-        sp_nums.setEnabled(false);
         Dialog_insert.pack();
         Dialog_insert.setModal(true);
         Dialog_insert.setLocationRelativeTo(null);
@@ -267,13 +399,125 @@ public class Frame extends javax.swing.JFrame {
         
     }//GEN-LAST:event_b_addMouseClicked
 
-    private void randomInsertionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_randomInsertionMouseClicked
-       if(randomInsertion.isSelected()){
-           sp_nums.setEnabled(true);
-       }
-       else
-           sp_nums.setEnabled(false);
-    }//GEN-LAST:event_randomInsertionMouseClicked
+    private void b_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_addActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_b_addActionPerformed
+
+    private void b_impMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_b_impMouseClicked
+        JFileChooser jFileChooser = new JFileChooser();
+        StringBuffer buffer;
+        buffer = new StringBuffer();
+        int result = jFileChooser.showOpenDialog(this);
+        File selectedFile = jFileChooser.getSelectedFile();
+        String path = selectedFile.getPath();
+        String content = "";
+        valuesFromFile.clear();
+        
+        if(result==JFileChooser.APPROVE_OPTION){
+            File archivo = null;
+            BufferedReader br = null;
+        
+            try {
+
+                String line;
+                br = new BufferedReader(new FileReader(path));
+
+                while ((line = br.readLine()) != null) {
+                    content+=line;
+                }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    try {
+                        if (br != null)br.close();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                }
+            }
+            
+        
+            //get the content
+            int lim1 = 0, lim2 = 0;
+            String temp = "";
+            for(int i = 0; i < content.length(); i++){
+                notepad.append(Character.toString(content.charAt(i)));
+                if(i%50 == 0 && i != 0)
+                    notepad.append("\n");
+                
+                if(Character.toString(content.charAt(i)).equals(" ")){
+                    lim2 = i;
+                    temp = content.substring(lim1,lim2);
+                    System.out.println(temp);
+                    valuesFromFile.add(Integer.parseInt(temp));
+                    lim1 = i+1;  
+                }
+            }
+        }
+        
+        success.pack();
+        success.setModal(true);
+        success.setLocationRelativeTo(null);
+        success.setVisible(true);
+    }//GEN-LAST:event_b_impMouseClicked
+
+    private void b_drawMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_b_drawMouseClicked
+        Dialog_draw.pack();
+        Dialog_draw.setModal(true);
+        Dialog_draw.setLocationRelativeTo(null);
+        Dialog_draw.setTitle("Draw tree");
+        Dialog_draw.setVisible(true);
+    }//GEN-LAST:event_b_drawMouseClicked
+
+    private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
+       
+       for(int i = 0; i < valuesFromFile.size(); i++){
+           bTree.insert(valuesFromFile.get(i));
+       }    
+       b_add.setEnabled(true);
+       b_draw.setEnabled(true);
+       b_del.setEnabled(true);
+       b_exp.setEnabled(true);
+       success.setVisible(false);
+    }//GEN-LAST:event_jButton3MouseClicked
+
+    private void b_expMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_b_expMouseClicked
+        String content = "";
+        
+        for(int i = 0; i < valuesFromFile.size(); i++){
+            content += valuesFromFile.get(i).toString();
+            content += " ";
+        }
+        
+        File f;
+        FileOutputStream fos = null;
+            
+        try {
+
+            f = new File("example.txt");
+            fos = new FileOutputStream(f);
+
+            if (!f.exists()) {
+                f.createNewFile();
+            }
+            byte data[] = content.getBytes();
+            fos.write(data);
+            fos.flush();
+            fos.close();
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "ERROR! THE FILE COULDN'T BE WRITTEN");
+        }
+        
+        success1.pack();
+        success1.setModal(true);
+        success1.setLocationRelativeTo(null);
+        success1.setVisible(true);
+    }//GEN-LAST:event_b_expMouseClicked
+
+    private void jButton4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton4MouseClicked
+        success1.setVisible(false);
+    }//GEN-LAST:event_jButton4MouseClicked
 
     /**
      * @param args the command line arguments
@@ -311,24 +555,36 @@ public class Frame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JDialog Dialog_draw;
     private javax.swing.JDialog Dialog_insert;
     private javax.swing.JButton b_add;
     private javax.swing.JButton b_del;
+    private javax.swing.JButton b_draw;
+    private javax.swing.JButton b_exp;
+    private javax.swing.JButton b_imp;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JButton d_draw;
-    private javax.swing.JButton d_import;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JTextArea notepad;
     private javax.swing.JButton ok_insert;
-    private javax.swing.JToggleButton randomInsertion;
-    private javax.swing.JSpinner sp_nums;
+    private javax.swing.JDialog success;
+    private javax.swing.JDialog success1;
     private javax.swing.JTextField tf_newKey;
     // End of variables declaration//GEN-END:variables
     Tree bTree = new Tree(3);
+    ArrayList <Integer> valuesFromFile = new ArrayList();
 }
