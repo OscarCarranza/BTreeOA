@@ -13,6 +13,7 @@ public class Page {
     Page children[]; 
     Page parent;
     boolean isLeaf; 
+    boolean isVisited;
     
     public Page(){
 
@@ -31,8 +32,42 @@ public class Page {
             return keys[loc];
     }
 
-    public Page getChildAt(int pos)
-    {
+    public Page getParent() {
+        return parent;
+    }
+
+    public void setParent(Page parent) {
+        this.parent = parent;
+    }  
+
+    public Page getChildAt(int pos){
             return children[pos];
     }
+
+    @Override
+    public String toString() {
+        
+        String s = "";
+        
+        if(isVisited == false){
+            s += "---PAGE NODE ---\n";
+            for(int i = 0; i < keycount; i++){
+                if(i >= 1 && keys[i] != keys[i-1]){
+                    s += "KEY[" + i + "]: ";
+                    s+= keys[i];
+                    s += "\n";
+                }
+                if(i == 0){
+                    s += "KEY[" + i + "]: ";
+                    s+= keys[i];
+                    s += "\n";
+                }
+            }
+            isVisited = true;
+        }
+        
+        return s;    
+    }
+    
+    
 }

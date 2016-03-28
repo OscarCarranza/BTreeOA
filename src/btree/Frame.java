@@ -30,6 +30,8 @@ public class Frame extends javax.swing.JFrame {
         initComponents();
         this.setTitle("Organización de Archivos");
         this.setLocationRelativeTo(null);
+        notepad.setEditable(false);
+        drawTree.setEditable(false);
         
     }
 
@@ -54,6 +56,8 @@ public class Frame extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         notepad = new javax.swing.JTextArea();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        drawTree = new javax.swing.JTextArea();
         success = new javax.swing.JDialog();
         jLabel5 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
@@ -62,6 +66,17 @@ public class Frame extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
+        Dialog_delete = new javax.swing.JDialog();
+        jLabel11 = new javax.swing.JLabel();
+        tf_remKey = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
+        jSeparator2 = new javax.swing.JSeparator();
+        ok_insert1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        success2 = new javax.swing.JDialog();
+        jLabel13 = new javax.swing.JLabel();
+        jButton5 = new javax.swing.JButton();
+        jLabel14 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         b_add = new javax.swing.JButton();
@@ -153,6 +168,10 @@ public class Frame extends javax.swing.JFrame {
         notepad.setRows(5);
         jScrollPane1.setViewportView(notepad);
 
+        drawTree.setColumns(20);
+        drawTree.setRows(5);
+        jScrollPane2.setViewportView(drawTree);
+
         javax.swing.GroupLayout Dialog_drawLayout = new javax.swing.GroupLayout(Dialog_draw.getContentPane());
         Dialog_draw.getContentPane().setLayout(Dialog_drawLayout);
         Dialog_drawLayout.setHorizontalGroup(
@@ -160,11 +179,13 @@ public class Frame extends javax.swing.JFrame {
             .addGroup(Dialog_drawLayout.createSequentialGroup()
                 .addGroup(Dialog_drawLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(Dialog_drawLayout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 358, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(Dialog_drawLayout.createSequentialGroup()
                         .addGap(151, 151, 151)
-                        .addComponent(jLabel7)))
+                        .addComponent(jLabel7))
+                    .addGroup(Dialog_drawLayout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addGroup(Dialog_drawLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 358, Short.MAX_VALUE)
+                            .addComponent(jScrollPane2))))
                 .addContainerGap(21, Short.MAX_VALUE))
         );
         Dialog_drawLayout.setVerticalGroup(
@@ -172,9 +193,11 @@ public class Frame extends javax.swing.JFrame {
             .addGroup(Dialog_drawLayout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addComponent(jLabel7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(162, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jLabel5.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -212,7 +235,7 @@ public class Frame extends javax.swing.JFrame {
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(21, Short.MAX_VALUE))
+                        .addContainerGap(24, Short.MAX_VALUE))
                     .addGroup(successLayout.createSequentialGroup()
                         .addComponent(jLabel8)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
@@ -261,6 +284,120 @@ public class Frame extends javax.swing.JFrame {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
+        jLabel11.setText("Delete Key");
+
+        tf_remKey.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tf_remKeyKeyTyped(evt);
+            }
+        });
+
+        jLabel12.setText("Value");
+
+        ok_insert1.setText("Accept");
+        ok_insert1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ok_insert1MouseClicked(evt);
+            }
+        });
+
+        jButton2.setText("Cancel");
+        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton2MouseClicked(evt);
+            }
+        });
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout Dialog_deleteLayout = new javax.swing.GroupLayout(Dialog_delete.getContentPane());
+        Dialog_delete.getContentPane().setLayout(Dialog_deleteLayout);
+        Dialog_deleteLayout.setHorizontalGroup(
+            Dialog_deleteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(Dialog_deleteLayout.createSequentialGroup()
+                .addGroup(Dialog_deleteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(Dialog_deleteLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jSeparator2))
+                    .addGroup(Dialog_deleteLayout.createSequentialGroup()
+                        .addGap(46, 46, 46)
+                        .addGroup(Dialog_deleteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, Dialog_deleteLayout.createSequentialGroup()
+                                .addComponent(ok_insert1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(Dialog_deleteLayout.createSequentialGroup()
+                                .addComponent(jLabel12)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(tf_remKey, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 40, Short.MAX_VALUE)))
+                .addContainerGap())
+            .addGroup(Dialog_deleteLayout.createSequentialGroup()
+                .addGap(97, 97, 97)
+                .addComponent(jLabel11)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        Dialog_deleteLayout.setVerticalGroup(
+            Dialog_deleteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(Dialog_deleteLayout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(jLabel11)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(Dialog_deleteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel12)
+                    .addComponent(tf_remKey, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addGroup(Dialog_deleteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ok_insert1)
+                    .addComponent(jButton2))
+                .addGap(21, 21, 21))
+        );
+
+        jLabel13.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel13.setText("VALUE REMOVED");
+
+        jButton5.setText("OK");
+        jButton5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton5MouseClicked(evt);
+            }
+        });
+
+        jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imgs/thumbs.png"))); // NOI18N
+
+        javax.swing.GroupLayout success2Layout = new javax.swing.GroupLayout(success2.getContentPane());
+        success2.getContentPane().setLayout(success2Layout);
+        success2Layout.setHorizontalGroup(
+            success2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(success2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel14)
+                .addGap(18, 18, 18)
+                .addGroup(success2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(success2Layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(26, Short.MAX_VALUE))
+        );
+        success2Layout.setVerticalGroup(
+            success2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(success2Layout.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addGroup(success2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(success2Layout.createSequentialGroup()
+                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel14))
+                .addContainerGap(26, Short.MAX_VALUE))
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
@@ -289,6 +426,11 @@ public class Frame extends javax.swing.JFrame {
 
         b_del.setText("Remove");
         b_del.setEnabled(false);
+        b_del.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                b_delMouseClicked(evt);
+            }
+        });
         b_del.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 b_delActionPerformed(evt);
@@ -404,69 +546,83 @@ public class Frame extends javax.swing.JFrame {
     }//GEN-LAST:event_b_addActionPerformed
 
     private void b_impMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_b_impMouseClicked
-        JFileChooser jFileChooser = new JFileChooser();
-        StringBuffer buffer;
-        buffer = new StringBuffer();
-        int result = jFileChooser.showOpenDialog(this);
-        File selectedFile = jFileChooser.getSelectedFile();
-        String path = selectedFile.getPath();
-        String content = "";
-        valuesFromFile.clear();
-        
-        if(result==JFileChooser.APPROVE_OPTION){
-            File archivo = null;
-            BufferedReader br = null;
-        
-            try {
+        try{
+            JFileChooser jFileChooser = new JFileChooser();
+            StringBuffer buffer;
+            buffer = new StringBuffer();
+            int result = jFileChooser.showOpenDialog(this);
+            File selectedFile = jFileChooser.getSelectedFile();
+            String path = selectedFile.getPath();
+            String content = "";
+            valuesFromFile.clear();
 
-                String line;
-                br = new BufferedReader(new FileReader(path));
+            if(result==JFileChooser.APPROVE_OPTION){
+                File archivo = null;
+                BufferedReader br = null;
 
-                while ((line = br.readLine()) != null) {
-                    content+=line;
+                try {
+
+                    String line;
+                    br = new BufferedReader(new FileReader(path));
+
+                    while ((line = br.readLine()) != null) {
+                        content+=line;
+                    }
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } finally {
+                        try {
+                            if (br != null)br.close();
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                    }
                 }
 
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    try {
-                        if (br != null)br.close();
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
+
+                //get the content
+                int lim1 = 0, lim2 = 0;
+                String temp = "";
+                for(int i = 0; i < content.length(); i++){
+                    notepad.append(Character.toString(content.charAt(i)));
+                    if(i%50 == 0 && i != 0)
+                        notepad.append("\n");
+
+                    if(Character.toString(content.charAt(i)).equals(" ")){
+                        lim2 = i;
+                        temp = content.substring(lim1,lim2);
+                        valuesFromFile.add(Integer.parseInt(temp));
+                        lim1 = i+1;  
+                    }
                 }
             }
-            
-        
-            //get the content
-            int lim1 = 0, lim2 = 0;
-            String temp = "";
-            for(int i = 0; i < content.length(); i++){
-                notepad.append(Character.toString(content.charAt(i)));
-                if(i%50 == 0 && i != 0)
-                    notepad.append("\n");
-                
-                if(Character.toString(content.charAt(i)).equals(" ")){
-                    lim2 = i;
-                    temp = content.substring(lim1,lim2);
-                    System.out.println(temp);
-                    valuesFromFile.add(Integer.parseInt(temp));
-                    lim1 = i+1;  
-                }
-            }
+
+            success.pack();
+            success.setModal(true);
+            success.setLocationRelativeTo(null);
+            success.setVisible(true);
         }
-        
-        success.pack();
-        success.setModal(true);
-        success.setLocationRelativeTo(null);
-        success.setVisible(true);
+        catch(Exception e){
+            
+        }
     }//GEN-LAST:event_b_impMouseClicked
 
     private void b_drawMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_b_drawMouseClicked
+        
+        bTree.markUnVisited(bTree.root);
+        bTree.clearDrawing();
+        bTree.draw(bTree.root);
+        
+        // set text to drawTree
+        System.out.println("HEIGHT: " + bTree.calculateHeight(bTree.root, 2));
+        drawTree.setText(bTree.drawing);
+                
         Dialog_draw.pack();
         Dialog_draw.setModal(true);
         Dialog_draw.setLocationRelativeTo(null);
         Dialog_draw.setTitle("Draw tree");
         Dialog_draw.setVisible(true);
+        
     }//GEN-LAST:event_b_drawMouseClicked
 
     private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
@@ -519,6 +675,43 @@ public class Frame extends javax.swing.JFrame {
         success1.setVisible(false);
     }//GEN-LAST:event_jButton4MouseClicked
 
+    private void tf_remKeyKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tf_remKeyKeyTyped
+        char c = evt.getKeyChar();
+        if(!(Character.isDigit(c)) || (c == KeyEvent.VK_BACK_SPACE) || c == KeyEvent.VK_DELETE){
+            evt.consume();
+        }
+    }//GEN-LAST:event_tf_remKeyKeyTyped
+
+    private void ok_insert1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ok_insert1MouseClicked
+        success2.pack();
+        success2.setModal(true);
+        success2.setLocationRelativeTo(null);
+        success2.setVisible(true);
+        tf_remKey.setText("");
+    }//GEN-LAST:event_ok_insert1MouseClicked
+
+    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
+        tf_remKey.setText("");
+        Dialog_delete.setVisible(false);
+    }//GEN-LAST:event_jButton2MouseClicked
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton5MouseClicked
+        success2.setVisible(false);
+        
+    }//GEN-LAST:event_jButton5MouseClicked
+
+    private void b_delMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_b_delMouseClicked
+        Dialog_delete.pack();
+        Dialog_delete.setModal(true);
+        Dialog_delete.setTitle("Remove key");
+        Dialog_delete.setLocationRelativeTo(null);
+        Dialog_delete.setVisible(true);
+    }//GEN-LAST:event_b_delMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -555,6 +748,7 @@ public class Frame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JDialog Dialog_delete;
     private javax.swing.JDialog Dialog_draw;
     private javax.swing.JDialog Dialog_insert;
     private javax.swing.JButton b_add;
@@ -563,11 +757,18 @@ public class Frame extends javax.swing.JFrame {
     private javax.swing.JButton b_exp;
     private javax.swing.JButton b_imp;
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JTextArea drawTree;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -578,13 +779,18 @@ public class Frame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTextArea notepad;
     private javax.swing.JButton ok_insert;
+    private javax.swing.JButton ok_insert1;
     private javax.swing.JDialog success;
     private javax.swing.JDialog success1;
+    private javax.swing.JDialog success2;
     private javax.swing.JTextField tf_newKey;
+    private javax.swing.JTextField tf_remKey;
     // End of variables declaration//GEN-END:variables
-    Tree bTree = new Tree(3);
+    Tree bTree = new Tree();
     ArrayList <Integer> valuesFromFile = new ArrayList();
 }

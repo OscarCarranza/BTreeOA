@@ -9,30 +9,43 @@ public class Tree {
     
     static int order = 3; 
     Page root; 
+    int height;
+    String drawing = "";
 
 
-    public Tree(int order){
+    public Tree(){
         root = new Page(order, null);
     }
-
-    public Page findPos(Page currentPage, int newKey){
-
-        int pos = 0;
-
-        while(pos < currentPage.keycount && newKey > currentPage.keys[pos]){
-            pos++;
-        }
-
-        if(pos <= currentPage.keycount && newKey == currentPage.keys[pos]){
-            return currentPage;
-        }
-
-        if(currentPage.isLeaf){
-            return null ;
+    
+    public void clearDrawing(){
+        drawing = "";
+    }
+    
+    public int calculateHeight(Page currentPage, int h){ //h = 1 
+        if(currentPage.isLeaf == false){
+            System.out.println("NO ES UNA HOJA");
+            h++;
+            return calculateHeight(currentPage.getChildAt(0),h);
         }
         else{
-            return findPos(currentPage.getChildAt(pos),newKey);
+            return h;
         }
+    }
+
+    
+    public void insert(int key){
+        Page currentPage = this.root;
+        if(currentPage.keycount == 2*order - 1){
+            Page temp = new Page(order,null);
+            this.root = temp;
+            temp.isLeaf = false;
+            temp.keycount = 0;  
+            temp.children[0] = currentPage;
+            split(temp,currentPage,0);
+            directInsertion(temp, key);
+        }
+        else
+            directInsertion(currentPage,key);
     }
 
     public void split(Page leftChild, Page rightChild, int new_key){
@@ -98,38 +111,56 @@ public class Tree {
                     pos++;
                 }
             }
-
             directInsertion(page.children[pos],newKey);
         }
     }
 
-    public void insert(int key){
-        Page currentPage = this.root;
-        if(currentPage.keycount == 2*order - 1){
-            Page temp = new Page(order,null);
-            this.root = temp;
-            temp.isLeaf = false;
-            temp.keycount = 0;  
-            temp.children[0] = currentPage;
-            split(temp,currentPage,0);
-            directInsertion(temp, key);
-        }
-        else
-            directInsertion(currentPage,key);
-    }
-
-    public void print(Page currentPage){
+    public void draw(Page currentPage){
+        
         for(int i = 0; i < currentPage.keycount; i++){
-            System.out.print(currentPage.getValue(i) + " ");
+            drawing += currentPage.toString();
         }
 
         if(!currentPage.isLeaf){
-            for(int i = 0; i <= currentPage.keycount; i++){				  
-                if(currentPage.getChildAt(i) != null){			 
-                System.out.println();	
-                print(currentPage.getChildAt(i));    
+            for(int i = 0; i <= currentPage.keycount; i++){	
+                if(currentPage.getChildAt(i) != null){			
+                    draw(currentPage.getChildAt(i));    
                 }
             }
+        }
+    }
+    
+    public void markUnVisited(Page currentPage){
+         for(int i = 0; i < currentPage.keycount; i++){
+            currentPage.isVisited = false;
+         }
+        if(!currentPage.isLeaf){
+            for(int i = 0; i <= currentPage.keycount; i++){				  
+                if(currentPage.getChildAt(i) != null){			 
+                  currentPage.isVisited = false; 
+                }
+            }
+        }
+    }
+    
+   
+    public Page findPos(Page currentPage, int newKey){
+
+        int pos = 0;
+
+        while(pos < currentPage.keycount && newKey > currentPage.keys[pos]){
+            pos++;
+        }
+
+        if(pos <= currentPage.keycount && newKey == currentPage.keys[pos]){
+            return currentPage;
+        }
+
+        if(currentPage.isLeaf){
+            return null ;
+        }
+        else{
+            return findPos(currentPage.getChildAt(pos),newKey);
         }
     }
     
