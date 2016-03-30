@@ -23,7 +23,6 @@ public class Tree {
     
     public int calculateHeight(Page currentPage, int h){ //h = 1 
         if(currentPage.isLeaf == false){
-            System.out.println("NO ES UNA HOJA");
             h++;
             return calculateHeight(currentPage.getChildAt(0),h);
         }
@@ -118,15 +117,20 @@ public class Tree {
     public void draw(Page currentPage){
         
         for(int i = 0; i < currentPage.keycount; i++){
-            drawing += currentPage.toString();
+            if(currentPage.keys[i] != 0)
+                drawing += currentPage.toString();
         }
 
         if(!currentPage.isLeaf){
             for(int i = 0; i <= currentPage.keycount; i++){	
-                if(currentPage.getChildAt(i) != null){			
+                if(currentPage.getChildAt(i) != null){	
+                    System.out.println("Page is not leaf");
                     draw(currentPage.getChildAt(i));    
                 }
             }
+        }
+        else{
+            System.out.println("Page is leaf");
         }
     }
     
@@ -147,15 +151,13 @@ public class Tree {
     public Page findPos(Page currentPage, int newKey){
 
         int pos = 0;
-
         while(pos < currentPage.keycount && newKey > currentPage.keys[pos]){
             pos++;
         }
-
+        
         if(pos <= currentPage.keycount && newKey == currentPage.keys[pos]){
             return currentPage;
-        }
-
+        } 
         if(currentPage.isLeaf){
             return null ;
         }
@@ -164,23 +166,27 @@ public class Tree {
         }
     }
     
-   public void deleteKey(int key){
+   public boolean deleteKey(int key){
 
-        Page temp = new Page(order,null);
-        temp = findPos(this.root,key);
+        Page temp = new Page(3,null);
+        findPos(this.root,key);
 
+        //si es una hoja
         if(temp.isLeaf && temp.keycount > order - 1){
             int cont = 0;
             while( key > temp.getValue(cont)){
                 cont++;
             }
             for(int i = cont; i < 2*order - 2; i++){
-                    temp.keys[i] = temp.getValue(i+1);
+                temp.keys[i] = temp.getValue(i+1);
             }
             temp.keycount--;
+            return true;
         }
+        
         else{
-                System.out.println("This node is either not a leaf or has less than order - 1 keys.");
+            
+            return false;
         }
    }
 }

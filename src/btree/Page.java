@@ -18,7 +18,32 @@ public class Page {
     public Page(){
 
     }
-
+    
+        @Override
+    public String toString() {
+        
+        String s = "";
+        
+        if(isVisited == false){
+            s += "---PAGE NODE ---\n";
+            for(int i = 0; i < keycount; i++){
+                if(i >= 1 && keys[i] != keys[i-1]){
+                    s += "KEY[" + i + "]: ";
+                    s+= keys[i];
+                    s += "\n";
+                }
+                if(i == 0){
+                    s += "KEY[" + i + "]: ";
+                    s+= keys[i];
+                    s += "\n";
+                }
+            }
+            isVisited = true;
+        }
+        
+        return s;    
+    }
+    
     public Page(int order, Page parent){
             this.order = order; 
             this.parent = parent;
@@ -42,31 +67,6 @@ public class Page {
 
     public Page getChildAt(int pos){
             return children[pos];
-    }
-
-    @Override
-    public String toString() {
-        
-        String s = "";
-        
-        if(isVisited == false){
-            s += "---PAGE NODE ---\n";
-            for(int i = 0; i < keycount; i++){
-                if(i >= 1 && keys[i] != keys[i-1]){
-                    s += "KEY[" + i + "]: ";
-                    s+= keys[i];
-                    s += "\n";
-                }
-                if(i == 0){
-                    s += "KEY[" + i + "]: ";
-                    s+= keys[i];
-                    s += "\n";
-                }
-            }
-            isVisited = true;
-        }
-        
-        return s;    
     }
     
     

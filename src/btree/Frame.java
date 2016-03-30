@@ -194,9 +194,9 @@ public class Frame extends javax.swing.JFrame {
                 .addGap(27, 27, 27)
                 .addComponent(jLabel7)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -683,10 +683,19 @@ public class Frame extends javax.swing.JFrame {
     }//GEN-LAST:event_tf_remKeyKeyTyped
 
     private void ok_insert1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ok_insert1MouseClicked
-        success2.pack();
-        success2.setModal(true);
-        success2.setLocationRelativeTo(null);
-        success2.setVisible(true);
+        int key = Integer.parseInt(tf_remKey.getText());
+        boolean b = bTree.deleteKey(key);
+        
+        if(b == true){
+            success2.pack();
+            success2.setModal(true);
+            success2.setLocationRelativeTo(null);
+            success2.setVisible(true);
+        }
+        else{
+            System.out.println("Value is not leaf or does not exist! :(");
+        }
+        
         tf_remKey.setText("");
     }//GEN-LAST:event_ok_insert1MouseClicked
 
